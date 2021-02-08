@@ -19,6 +19,7 @@ class CardPage extends StatelessWidget {
             height: 30.0,
           ),
           _cardType2(),
+          
         ],
       ),
     );
@@ -81,7 +82,7 @@ class CardPage extends StatelessWidget {
           // ),
           Container(
             padding: EdgeInsets.all(10.0),
-            child: Text('No se que poner'),
+            child: Text('Paisaje'),
           )
         ],
       ),
