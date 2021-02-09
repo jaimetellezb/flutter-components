@@ -6,16 +6,25 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
-  String _name;
+  String _name = '';
+  String _email = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Inputos de texto"),
+        title: Text("Inputs de texto"),
       ),
       body: ListView(
         padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
-        children: [_createInput(), Divider(), _createPerson()],
+        children: [
+          _createInput(),
+          Divider(),
+          _createEmail(),
+          Divider(),
+          _createPassword(),
+          Divider(),
+          _createPerson()
+        ],
       ),
     );
   }
@@ -40,9 +49,43 @@ class _InputPageState extends State<InputPage> {
     );
   }
 
-  _createPerson() {
+  Widget _createPerson() {
     return ListTile(
-      title: Text('Nombre es: $_name'),
+      title: Text('Nombre: $_name'),
+      subtitle: Text('Email: $_email'),
+    );
+  }
+
+  Widget _createEmail() {
+    return TextField(
+      keyboardType: TextInputType.emailAddress,
+      // autofocus: true,
+      textCapitalization: TextCapitalization.sentences,
+      decoration: InputDecoration(
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
+          hintText: 'Email',
+          labelText: 'Email',
+          suffixIcon: Icon(Icons.alternate_email),
+          icon: Icon(Icons.email)),
+      onChanged: (value) {
+        setState(() => _email = value);
+      },
+    );
+  }
+
+  Widget _createPassword() {
+    return TextField(
+      obscureText: true,
+      textCapitalization: TextCapitalization.sentences,
+      decoration: InputDecoration(
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
+          hintText: 'Password',
+          labelText: 'Password',
+          suffixIcon: Icon(Icons.lock_open),
+          icon: Icon(Icons.lock)),
+      onChanged: (value) {
+        setState(() => _email = value);
+      },
     );
   }
 }
