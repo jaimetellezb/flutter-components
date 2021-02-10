@@ -10,6 +10,10 @@ class _InputPageState extends State<InputPage> {
   String _email = '';
   String _date = '';
 
+  String _optionSelected = 'Volar';
+
+  List<String> _powers = ['Volar', 'Rayos X', 'Super aliento', 'Super Fuerza'];
+
   TextEditingController _inputFieldDateController = new TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -27,6 +31,8 @@ class _InputPageState extends State<InputPage> {
           _createPassword(),
           Divider(),
           _createDate(context),
+          Divider(),
+          _createDropdown(),
           Divider(),
           _createPerson(),
         ],
@@ -58,6 +64,7 @@ class _InputPageState extends State<InputPage> {
     return ListTile(
       title: Text('Nombre: $_name'),
       subtitle: Text('Email: $_email'),
+      trailing: Text(_optionSelected),
     );
   }
 
@@ -116,8 +123,7 @@ class _InputPageState extends State<InputPage> {
         initialDate: new DateTime.now(),
         firstDate: new DateTime(2018),
         lastDate: new DateTime(2025),
-        locale: Locale('es', 'ES')
-    );
+        locale: Locale('es', 'ES'));
 
     if (picked != null) {
       setState(() {
@@ -125,5 +131,40 @@ class _InputPageState extends State<InputPage> {
         _inputFieldDateController.text = _date;
       });
     }
+  }
+
+  List<DropdownMenuItem<String>> getOptionsDropdown() {
+    List<DropdownMenuItem<String>> list = new List();
+
+    _powers.forEach((power) {
+      list.add(DropdownMenuItem(
+        child: Text(power),
+        value: power,
+      ));
+    });
+
+    return list;
+  }
+
+  Widget _createDropdown() {
+    return Row(
+      children: [
+        Icon(Icons.select_all),
+        SizedBox(width: 30.0,),
+        Expanded(
+          child: DropdownButton(
+            value: _optionSelected,
+            items: getOptionsDropdown(),
+            onChanged: (opt) {
+                setState(() {
+                  _optionSelected = opt;
+                });
+            },
+          ),
+        )
+      ],
+    );
+
+    
   }
 }
