@@ -73,6 +73,8 @@ class _ListPageState extends State<ListPage> {
       _lastItem++;
       _add10();
     });
+
+    Future.delayed(duration);
   }
 
   void _add10() {
@@ -97,11 +99,8 @@ class _ListPageState extends State<ListPage> {
   void responseHTTP() {
     _isLoading = false;
 
-    _scrollController.animateTo(
-      _scrollController.position.pixels + 100,
-      curve: Curves.fastOutSlowIn,
-      duration: Duration(milliseconds: 250)
-    );
+    _scrollController.animateTo(_scrollController.position.pixels + 100,
+        curve: Curves.fastOutSlowIn, duration: Duration(milliseconds: 250));
 
     _add10();
   }
