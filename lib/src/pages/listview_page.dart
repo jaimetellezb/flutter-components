@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 class ListPage extends StatefulWidget {
@@ -10,6 +12,7 @@ class _ListPageState extends State<ListPage> {
 
   List<int> _numberList = new List();
   int _lastItem = 0;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -20,9 +23,18 @@ class _ListPageState extends State<ListPage> {
       // indica que estamos al final de la página
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        _add10();
+        // _add10();
+        fetchData();
       }
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    // para prevenir fugas de memoria
+    _scrollController.dispose();
   }
 
   @override
@@ -31,7 +43,9 @@ class _ListPageState extends State<ListPage> {
       appBar: AppBar(
         title: Text("Listas"),
       ),
-      body: _createList(),
+      body: Stack(
+        children: [_createList(), _createLoading()],
+      ),
     );
   }
 
@@ -56,5 +70,47 @@ class _ListPageState extends State<ListPage> {
     }
 
     setState(() {});
+  }
+
+  Future fetchData() async {
+    _isLoading = true;
+
+    // redibuja los widgets
+    setState(() {});
+
+    final duration = new Duration(seconds: 2);
+    new Timer(duration, responseHTTP);
+  }
+
+  void responseHTTP() {
+    _isLoading = false;
+
+    _scrollController.animateTo(
+      _scrollController.position.pixels + 100,
+      curve: Curves.fastOutSlowIn,
+      duration: Duration(milliseconds: 250)
+    );
+
+    _add10();
+  }
+
+  Widget _createLoading() {
+    if (_isLoading) {
+      return Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [CircularProgressIndicator()],
+          ),
+          SizedBox(
+            height: 15.0,
+          )
+        ],
+      );
+    } else {
+      return Container();
+    }
   }
 }
